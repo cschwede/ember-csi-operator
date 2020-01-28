@@ -95,7 +95,6 @@ func getControllerContainers(ecsi *embercsiv1alpha1.EmberCSI) []corev1.Container
 		args := []string{
 			"--v=5",
 			"--csi-address=/csi-data/csi.sock",
-			fmt.Sprintf("%s%s", "--provisioner=", GetPluginDomainName(ecsi.Name)),
 		}
 
 		if Conf.getCSISpecVersion() > 0.3 {
