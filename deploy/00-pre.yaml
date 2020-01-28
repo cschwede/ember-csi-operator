@@ -131,6 +131,7 @@ rules:
   - get
   - watch
   - update
+  - patch
 - apiGroups:
   - ""
   resources:
@@ -141,21 +142,30 @@ rules:
   - watch 
   - update
 - apiGroups:
-  - storage.k8s.io
+  - ""
   resources:
+  - persistentvolumeclaims/status
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - "*"
+  resources:
+  - storageclasses
+  - csinodes
+  - csidrivers
   - volumeattachments
   verbs:
   - get
   - list
   - watch
-  - update
-  - delete
-  - create
 - apiGroups:
   - storage.k8s.io
   resources:
   - storageclasses
   - csinodes
+  - csidrivers
+  - volumeattachments
   verbs:
   - create
   - get
@@ -163,6 +173,7 @@ rules:
   - watch
   - update
   - delete
+  - patch
 - apiGroups: 
   - "*"
   resources:
@@ -205,16 +216,11 @@ rules:
   - watch
   - update
 - apiGroups:
-  - csi.storage.k8s.io
+  - snapshot.storage.k8s.io
   resources:
-  - csidrivers
+  - volumesnapshots/status
   verbs:
-  - create
-  - get
-  - list
-  - watch
   - update
-  - delete
 
 ---
 kind: ClusterRoleBinding
