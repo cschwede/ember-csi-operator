@@ -25,10 +25,10 @@ build:
 ifndef MULTISTAGE_BUILD
 	docker build -t $(REPO):build . -f build/Dockerfile.build
 	docker container create --name extract $(REPO):build
-	docker container cp extract:/go/src/github.com/embercsi/ember-csi-operator/build/ember-csi-operator ./ember-csi-operator
+	docker container cp extract:/go/src/github.com/embercsi/ember-csi-operator/build/ember-csi-operator ./build/ember-csi-operator
 	docker container rm -f extract
 	docker build --no-cache -t $(REPO):$(TAG) -f build/Dockerfile .
-	rm ./ember-csi-operator
+	rm ./build/ember-csi-operator
 else
 	docker build -t $(REPO):$(TAG) -f build/Dockerfile.multistage .
 endif
