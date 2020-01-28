@@ -152,8 +152,9 @@ func getNodeContainers(ecsi *embercsiv1alpha1.EmberCSI, daemonSetIndex int) []co
 			Image: Conf.Sidecars[Cluster].NodeRegistrar,
 			Args: []string{
 				"--v=5",
-				"--csi-address=/csi-data/csi.sock",
-				fmt.Sprintf("%s/%s/%s", "--kubelet-registration-path=/var/lib/kubelet/plugins", GetPluginDomainName(ecsi.Name), "csi.sock"),
+				"--csi-address=/var/lib/ember-csi/csi.sock",
+				fmt.Sprintf("%s/%s/%s", "--kubelet-registration-path=/var/lib/ember-csi/", GetPluginDomainName(ecsi.Name), "/csi.sock"),
+
 			},
 			SecurityContext: &corev1.SecurityContext{Privileged: &trueVar},
 			Env: []corev1.EnvVar{
@@ -168,7 +169,7 @@ func getNodeContainers(ecsi *embercsiv1alpha1.EmberCSI, daemonSetIndex int) []co
 			},
 			VolumeMounts: []corev1.VolumeMount{
 				{
-					MountPath: "/csi-data",
+					MountPath: "/var/lib/ember-csi",
 					Name:      "socket-dir",
 				},
 				{
@@ -187,7 +188,7 @@ func getNodeContainers(ecsi *embercsiv1alpha1.EmberCSI, daemonSetIndex int) []co
 			Image: Conf.Sidecars[Cluster].Registrar,
 			Args: []string{
 				"--v=5",
-				"--csi-address=/csi-data/csi.sock",
+				"--csi-address=/var/lib/ember-csi/csi.sock",
 			},
 			SecurityContext: &corev1.SecurityContext{Privileged: &trueVar},
 			Env: []corev1.EnvVar{
@@ -202,7 +203,7 @@ func getNodeContainers(ecsi *embercsiv1alpha1.EmberCSI, daemonSetIndex int) []co
 			},
 			VolumeMounts: []corev1.VolumeMount{
 				{
-					MountPath: "/csi-data",
+					MountPath: "/var/lib/ember-csi",
 					Name:      "socket-dir",
 				},
 			},
@@ -221,7 +222,7 @@ func generateNodeEnvVars(ecsi *embercsiv1alpha1.EmberCSI, daemonSetIndex int) []
 			Value: "0",
 		}, {
 			Name:  "CSI_ENDPOINT",
-			Value: "unix:///csi-data/csi.sock",
+			Value: "unix:///var/lib/ember-csi/csi.sock",
 		}, {
 			Name:  "X_CSI_SPEC_VERSION",
 			Value: Conf.Sidecars[Cluster].CSISpecVersion,
