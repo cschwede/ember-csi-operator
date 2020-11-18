@@ -111,6 +111,7 @@ func getControllerContainers(ecsi *embercsiv1alpha1.EmberStorageBackend) []corev
 			Args: []string{"--v=5",
 				"--csi-address=/csi-data/csi.sock",
 				"--timeout=120s",
+				"--connection-timeout=120s",
 			},
 			SecurityContext: &corev1.SecurityContext{Privileged: &trueVar},
 			VolumeMounts: []corev1.VolumeMount{
